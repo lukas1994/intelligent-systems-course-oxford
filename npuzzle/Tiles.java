@@ -8,12 +8,12 @@ import search.State;
 
 public class Tiles implements State {
 	public static final int EMPTY_TILE = 0;
-	
+
 	protected final int width;
 	protected final int[] tiles;
 	protected final int emptyTileRow;
 	protected final int emptyTileColumn;
-	
+
 	public Tiles(int[][] tiles) {
 		width = tiles.length;
 		this.tiles = new int[width * width];
@@ -68,5 +68,40 @@ public class Tiles implements State {
 		newTiles[emptyTileRow * width + emptyTileColumn] = getTile(newEmptyTileRow, newEmptyTileColumn);
 		newTiles[newEmptyTileRow * width + newEmptyTileColumn] = EMPTY_TILE;
 		return new Tiles(width, newTiles, newEmptyTileRow, newEmptyTileColumn);
+	}
+	public boolean equals(Object that) {
+		// compare types / do null checks
+		if (this == that) {
+			return true;
+		}
+		if (that == null || !getClass().equals(that.getClass())) {
+			return false;
+		}
+		Tiles other = (Tiles) that;
+		if (tiles == null && other.tiles == null) {
+			return true;
+		}
+		// compare values of objects (i.e. the tiles arrays)
+		if (tiles == null ||
+		    other.tiles == null ||
+				width != other.width) {
+			return false;
+		}
+		for (int i = 0; i < width*width; i++) {
+			if (tiles[i] != other.tiles[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+	// simple hashCode function based on considering the object as a number in a
+	// prime base (37) `mod` MAX_INT
+	public int hashCode() {
+		int result = 0;
+		result = 37*result + width;
+		for (int i = 0; i < width*width; i++) {
+			result = 37*result + tiles[i];
+		}
+		return result;
 	}
 }
