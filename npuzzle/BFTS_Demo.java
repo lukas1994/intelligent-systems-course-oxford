@@ -8,33 +8,16 @@ public class BFTS_Demo {
 	public static final boolean ITD = true;
 
 	public static void main(String[] args) {
-		System.out.println("This is a demonstration of breadth-first tree search on 8-puzzle");
-		System.out.println();
-
 		Tiles initialConfiguration = new Tiles(new int[][] {
 			{ 7, 4, 2 },
 			{ 8, 1, 3 },
 			{ 5, 0, 6 }
 		});
 
-		Frontier frontier = null;
-		if (BFS) {
-			frontier = new BreadthFirstFrontier();
-		}
-		else {
-			frontier = new DepthFirstFrontier();
-		}
+		NodeFunction nodeFunction = new AStarFunction(new MisplacedTilesHeuristicFunction());
+		Frontier frontier = new BestFirstFrontier(nodeFunction);
 
-		Search search = null;
-		if (ITD) {
-			search = new IterativeDeepeningTreeSearch();
-		}
-		else if (TREE) {
-			search = new TreeSearch(frontier);
-		}
-		else {
-			search = new GraphSearch(frontier);
-		}
+		Search search = new GraphSearch(frontier);
 
 		GoalTest goalTest = new TilesGoalTest();
 		Node root = new Node(null, null, initialConfiguration);

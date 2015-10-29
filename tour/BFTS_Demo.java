@@ -8,30 +8,14 @@ public class BFTS_Demo {
 	public static final boolean ITD = true;
 
 	public static void main(String[] args) {
-		System.out.println("This is a demonstration of breadth-first tree search on Romania tour");
-		System.out.println();
-
-		Frontier frontier = null;
-		if (BFS) {
-			frontier = new BreadthFirstFrontier();
-		}
-		else {
-			frontier = new DepthFirstFrontier();
-		}
-
-		Search search = null;
-		if (ITD) {
-			search = new IterativeDeepeningTreeSearch();
-		}
-		else if (TREE) {
-			search = new TreeSearch(frontier);
-		}
-		else {
-			search = new GraphSearch(frontier);
-		}
-
 		Cities romania = SetUpRomania.getRomaniaMap();
+		//Cities romania = SetUpRomania.getRomaniaMapSmall();
 		City startCity = romania.getState("Bucharest");
+
+		NodeFunction nodeFunction = new AStarFunction(new HeuristicFunction(romania, startCity));
+		Frontier frontier = new BestFirstFrontier(nodeFunction);
+
+		Search search = new GraphSearch(frontier);
 
 		GoalTest goalTest = new TourGoalTest(romania.getAllCities(), startCity);
 		Node root = new Node(null, null, new TourState(startCity));

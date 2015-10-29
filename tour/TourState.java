@@ -22,6 +22,12 @@ public class TourState implements State {
 	public Set<Road> getApplicableActions() {
 		return currentCity.outgoingRoads;
 	}
+	public City getCurrentCity() {
+		return currentCity;
+	}
+	public Set<City> getVisitedCities() {
+		return visitedCities;
+	}
 	public State getActionResult(Action action) {
 		Road road = (Road)action;
 		Set<City> newVisitedCities = new LinkedHashSet<City>(visitedCities);
