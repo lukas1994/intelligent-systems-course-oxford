@@ -10,7 +10,7 @@ public class Planet {
         {1,1,0,0,0,1,0,1},
         {1,1,1,0,0,0,0,1},
         {1,1,1,1,0,1,1,1},
-     };
+     }; // 27 accessible fields
 
     public boolean isAccessible(Position p) {
         int x = p.x, y = p.y;

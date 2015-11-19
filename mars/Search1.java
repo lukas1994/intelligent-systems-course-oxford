@@ -1,22 +1,16 @@
 package mars;
 
-import java.util.Random;
 import java.util.LinkedList;
 
 /*
  * RESULTS:
  *  best: ESENEWNNWWWSWWSSSNEW (18)
  */
-public class Search1 {
-  private final Planet planet;
-  private int startX, startY, maxFuel;
-
-  private final Random random = new Random();
+public class Search1 extends Search {
+  private int maxFuel;
 
   public Search1(Planet planet, int startX, int startY, int maxFuel) {
-    this.planet = planet;
-    this.startX = startX;
-    this.startY = startY;
+    super(planet, startX, startY);
     this.maxFuel = maxFuel;
   }
 
@@ -44,14 +38,14 @@ public class Search1 {
     return s;
   }
 
-  private State getInitialState() {
-    Position position = new Position(startX, startY);
+  protected State getInitialState() {
+    Position position = Position.get(startX, startY);
     State s = new State(position);
     return extendState(s, maxFuel);
   }
 
-  private State randomNeighbour(State in) {
-    Position position = new Position(startX, startY);
+  protected State randomNeighbour(State in) {
+    Position position = Position.get(startX, startY);
     State out = new State(position);
     int use = random.nextInt(in.size());
     for (int i = 0; i < use; i++) {
@@ -60,22 +54,8 @@ public class Search1 {
     return extendState(out, in.size() - use);
   }
 
-  // Simulated Annealing
-  public State search() {
-    State current = getInitialState(), bestS = current;
-    for (int T = 1000; T > 0; T--) {
-      State next = randomNeighbour(current);
-      int delta = next.value() - current.value();
-      // choose next state if it improves the objective function or if it
-      // worsens it choose it with probability exp((delta-1) / T) to escape
-      // local maxima
-      // with lower deperature we're less likely to choose a solution that
-      // decreases the objective function
-      if (delta > 0 || Math.exp((delta-1) / T) > random.nextDouble()) {
-        current = next;
-        if (bestS.value() < current.value()) bestS = current;
-      }
-    }
-    return bestS;
+  // we want to maximize the number of visited squares
+  protected double objectiveFunction(State s) {
+    return s.getVisited().size();
   }
 }

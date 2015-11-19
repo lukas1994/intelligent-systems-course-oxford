@@ -3,7 +3,11 @@ package mars;
 public class Position {
   public final int x, y;
 
-  public Position(int x, int y) {
+  public static Position get(int x, int y) {
+    return new Position(x, y);
+  }
+  
+  private Position(int x, int y) {
     this.x = x;
     this.y = y;
   }

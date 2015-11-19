@@ -25,24 +25,20 @@ public class State extends LinkedList<Move> {
     return visited.contains(p);
   }
 
+  public Position getStartPosition() {
+    return startPosition;
+  }
+
   public Position getCurrentPosition() {
     return currentPosition;
+  }
+
+  public HashSet<Position> getVisited() {
+    return visited;
   }
 
   public void print() {
     for (Move m: this) System.out.print(m.toString());
     System.out.println();
-    System.out.println(" --> value: " + value());
-  }
-
-  public int value() {
-    HashSet<Position> s = new HashSet<>();
-    Position p = new Position(0, 0);
-    s.add(p);
-    for (Move m: this) {
-      p = p.next(m);
-      s.add(p);
-    }
-    return s.size();
   }
 }
